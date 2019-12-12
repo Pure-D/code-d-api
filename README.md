@@ -16,10 +16,10 @@ Add code-d as dependency to your vscode extension inside the package.json:
 
 To use, simply get the extension using this code:
 ```ts
-import * from "code-d-api";
+import * as coded from "code-d-api";
 
 export function activate(context: vscode.ExtensionContext) {
-	const api: coded.CodedAPI | undefined;
+	let api: coded.CodedAPI | undefined;
 	const codedExtension = vscode.extensions.getExtension<coded.CodedAPI>(coded.codedExtensionId);
 	if (codedExtension) {
 		api = codedExtension.exports;
