@@ -4,7 +4,7 @@ Extend `code-d` in vscode with custom features.
 
 This API provides:
 
-- support for registering custom snippets depending on installed APIs
+- support for registering custom snippets depending on installed DUB dependencies
 
 ## Usage
 
