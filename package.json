@@ -1,0 +1,29 @@
+{
+	"name": "code-d-api",
+	"description": "API for the VS Code plugin 'code-d'",
+	"version": "0.1.0",
+	"author": "webfreak",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Pure-D/code-d-api.git"
+	},
+	"license": "MIT",
+	"files": [
+		"out",
+		"README.md",
+		"LICENSE.md"
+	],
+	"main": "out/index.js",
+	"types": "out/index.d.ts",
+	"scripts": {
+		"postinstall-vscode": "node ./node_modules/vscode/bin/install"
+	},
+	"engines": {
+		"vscode": "^1.23.0"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"typescript": "^3.7.3",
+		"vscode": "^1.1.36"
+	}
+}
