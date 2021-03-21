@@ -5,6 +5,58 @@
  */
 export const codedExtensionId = "webfreak.code-d";
 
+export type DScannerIniFeature = { description: string, name: string, enabled: "disabled" | "enabled" | "skip-unittest" };
+export type DScannerIniSection = { description: string, name: string, features: DScannerIniFeature[] };
+
+/**
+ * Describes the minimum returned configuration when analyzing the active dub projects.
+ */
+export interface DubPackageConfig
+{
+	/**
+	 * absolute file system path to the DUB package folder.
+	 */
+	packagePath: string;
+
+	/**
+	 * configured DUB package name
+	 */
+	packageName: string;
+
+	/**
+	 * Extra fields which are not documented and _may_ be removed or omitted in some cases, however are expected to keep working.
+	 * 
+	 * Might contain all fields returned by the served/getActiveDubConfig method.
+	 * 
+	 * These currently include:
+	 * - "packagePath": string
+	 * - "packageName": string
+	 * - "targetPath": string
+	 * - "targetName": string
+	 * - "workingDirectory": string
+	 * - "mainSourceFile": string
+	 * - "dflags": string[]
+	 * - "lflags": string[]
+	 * - "libs": string[]
+	 * - "linkerFiles": string[]
+	 * - "sourceFiles": string[]
+	 * - "copyFiles": string[]
+	 * - "versions": string[]
+	 * - "debugVersions": string[]
+	 * - "importPaths": string[]
+	 * - "stringImportPaths": string[]
+	 * - "importFiles": string[]
+	 * - "stringImportFiles": string[]
+	 * - "preGenerateCommands": string[]
+	 * - "postGenerateCommands": string[]
+	 * - "preBuildCommands": string[]
+	 * - "postBuildCommands": string[]
+	 * - "preRunCommands": string[]
+	 * - "postRunCommands": string[]
+	 */
+	[unstableExtras: string]: any;
+}
+
 /**
  * code-d API exported by the code-d plugin
  */
@@ -20,6 +72,48 @@ export interface CodedAPI {
 	 * Utility function calling registerDependencyBasedSnippet with the requiredDependencies multiple times for each snippet.
 	 */
 	registerDependencyBasedSnippets(requiredDependencies: string[], snippets: Snippet[]): void;
+
+	/**
+	 * Triggers a refresh of DUB dependencies (dub update) & reloads import paths for completion.
+	 */
+	refreshDependencies(): boolean;
+
+	/**
+	 * Triggers dscanner linting for the given URI.
+	 * @param uri The vscode URI of the file to lint either as string or `vscode.Uri`.
+	 */
+	triggerDscanner(uri: string | object): boolean;
+
+	/**
+	 * Returns the dscanner configuration for the given URI.
+	 * @param uri The vscode URI of the file to check either as string or `vscode.Uri`.
+	 */
+	listDscannerConfig(uri: string | object): PromiseLike<DScannerIniSection[]>;
+
+	/**
+	 * Searches for a given filename (optionally also with subfolders) and returns all locations in the project and all dependencies including standard library where this file exists.
+	 * @param query The filename, optionally with subfolders, to search for in all projects and dependencies.
+	 * @returns list of native filesystem paths
+	 */
+	findFiles(query: string): PromiseLike<string[]>;
+
+	/**
+	 * Lists all files with a given module name in the project and all dependencies and standard library.
+	 * @param query The modulename to search for in all projects and dependencies.
+	 * @returns list of native filesystem paths
+	 */
+	findFilesByModule(query: string): PromiseLike<string[]>;
+
+	/**
+	 * Returns DUB settings for the currently active DUB package.
+	 * 
+	 * The "currently active DUB package" in the variables above means the DUB package associated with the last D file that was or is being edited. In case of projects with a single DUB configuration this will always be the project itself. In case of multiple opened folders or a folder with multiple dub.json/dub.sdl files, it will be the project associated with the last active D file loaded.
+	 *
+	 * If any D files for dependencies were opened before, they will not be considered as active DUB projects unless the dependency folders themselves are also opened within vscode.
+	 * 
+	 * @returns An object describing the DUB package of the currently active DUB package.
+	 */
+	getActiveDubConfig(): PromiseLike<DubPackageConfig>;
 }
 
 /**

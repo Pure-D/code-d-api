@@ -1,7 +1,7 @@
 {
 	"name": "code-d-api",
 	"description": "API for the VS Code plugin 'code-d'",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"author": "webfreak",
 	"repository": {
 		"type": "git",
@@ -21,7 +21,6 @@
 	"engines": {
 		"vscode": "^1.23.0"
 	},
-	"dependencies": {},
 	"devDependencies": {
 		"typescript": "^3.7.3",
 		"vscode": "^1.1.36"
