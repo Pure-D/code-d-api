@@ -129,7 +129,15 @@ export enum SnippetLevel {
 	/** inside a variable value, argument call, default value or similar */
 	value = 3,
 	/** Other scope types (for example outside of braces but after a function definition or some other invalid syntax place) */
-	other = 4
+	other = 4,
+	/** Inside a string literal. */
+	strings = 5,
+	/** Inside a normal comment */
+	comment = 6,
+	/** Inside a documentation comment */
+	docComment = 7,
+	/** Inside explicitly declared mixin templates */
+	mixinTemplate = 8,
 }
 
 /**
